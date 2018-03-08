@@ -66,26 +66,22 @@ var swap = function () {
             _options2 = this.options, executable = _options2.executable, backupDir = _options2.backupDir, execDir = _options2.execDir, updateDir = _options2.updateDir, logPath = _options2.logPath, log = fs.openSync(logPath, "a");
 
             if (!IS_OSX) {
-              _context2.next = 8;
+              _context2.next = 6;
               break;
             }
 
             _context2.next = 4;
-            return copy(join(execDir, executable), backupDir, log);
+            return copy(updateDir, execDir, log);
 
           case 4:
-            _context2.next = 6;
-            return copy(updateDir, execDir, log);
-
-          case 6:
-            _context2.next = 10;
+            _context2.next = 8;
             break;
 
-          case 8:
-            _context2.next = 10;
+          case 6:
+            _context2.next = 8;
             return copy(updateDir, execDir, log);
 
-          case 10:
+          case 8:
           case "end":
             return _context2.stop();
         }
