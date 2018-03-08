@@ -52,7 +52,7 @@ const { join  } = require( "path" ),
     const { executable, backupDir, execDir, updateDir, logPath } = this.options,
           log = fs.openSync( logPath, "a" );
     if ( IS_OSX ) {
-        await copy( join( execDir, executable ), backupDir, log );
+        // await copy( join( execDir, executable ), backupDir, log );
         await copy( updateDir, execDir, log );
     } else {
         // await copy( execDir, backupDir, log ,true);
