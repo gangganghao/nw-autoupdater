@@ -11,38 +11,38 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
  * @param {function} onProgress
  */
 var decompressZip = function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(archiveFile, extractDest, onProgress) {
-        var unzipper;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        unzipper = new DecompressZip(archiveFile);
-                        return _context.abrupt("return", new Promise(function (resolve, reject) {
-                            unzipper.on("error", reject);
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(archiveFile, extractDest, onProgress) {
+            var unzipper;
+            return _regenerator2.default.wrap(function _callee$(_context) {
+                  while (1) {
+                        switch (_context.prev = _context.next) {
+                              case 0:
+                                    unzipper = new DecompressZip(archiveFile);
+                                    return _context.abrupt("return", new Promise(function (resolve, reject) {
+                                          unzipper.on("error", reject);
 
-                            unzipper.on("extract", resolve);
+                                          unzipper.on("extract", resolve);
 
-                            unzipper.on("progress", function (fileIndex, fileCount) {
-                                return onProgress(fileIndex + 1, fileCount);
-                            });
+                                          unzipper.on("progress", function (fileIndex, fileCount) {
+                                                return onProgress(fileIndex + 1, fileCount);
+                                          });
 
-                            unzipper.extract({
-                                path: extractDest
-                            });
-                        }));
+                                          unzipper.extract({
+                                                path: extractDest
+                                          });
+                                    }));
 
-                    case 2:
-                    case "end":
-                        return _context.stop();
-                }
-            }
-        }, _callee, this);
-    }));
+                              case 2:
+                              case "end":
+                                    return _context.stop();
+                        }
+                  }
+            }, _callee, this);
+      }));
 
-    return function decompressZip(_x, _x2, _x3) {
-        return _ref.apply(this, arguments);
-    };
+      return function decompressZip(_x, _x2, _x3) {
+            return _ref.apply(this, arguments);
+      };
 }();
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

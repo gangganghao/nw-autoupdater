@@ -9,36 +9,49 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
  * @returns {Promise}
  */
 var restartToSwap = function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var extraArgs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+    var extraArgs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-            var _options, updateDir, logPath, swap, args;
+    var _options, updateDir, logPath, execDir, swap, args;
 
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                  while (1) {
-                        switch (_context.prev = _context.next) {
-                              case 0:
-                                    _options = this.options, updateDir = _options.updateDir, logPath = _options.logPath, swap = swapFactory(this.options), args = swap.getArgs().concat(extraArgs);
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _options = this.options, updateDir = _options.updateDir, logPath = _options.logPath, execDir = _options.execDir, swap = swapFactory(this.options), args = swap.getArgs().concat(extraArgs);
 
+            swap.extractScript(execDir);
 
-                                    swap.extractScript(updateDir);
-                                    _context.next = 4;
-                                    return launch(swap.getRunner(), args, updateDir, logPath);
+            if (!IS_OSX) {
+              _context.next = 7;
+              break;
+            }
 
-                              case 4:
-                                    nw.App.quit();
+            _context.next = 5;
+            return launch(swap.getRunner(), args, updateDir, logPath);
 
-                              case 5:
-                              case "end":
-                                    return _context.stop();
-                        }
-                  }
-            }, _callee, this);
-      }));
+          case 5:
+            _context.next = 9;
+            break;
 
-      return function restartToSwap() {
-            return _ref.apply(this, arguments);
-      };
+          case 7:
+            _context.next = 9;
+            return launch('cmd.exe', ['/c', swap.getRunner()].concat(args), updateDir, logPath);
+
+          case 9:
+            nw.App.quit();
+
+          case 10:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function restartToSwap() {
+    return _ref.apply(this, arguments);
+  };
 }();
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50,6 +63,7 @@ var _require = require("path"),
     _require2 = require("../utils"),
     launch = _require2.launch,
     _require3 = require("../env"),
-    swapFactory = _require3.swapFactory;
+    swapFactory = _require3.swapFactory,
+    IS_OSX = _require3.IS_OSX;
 
 exports.restartToSwap = restartToSwap;

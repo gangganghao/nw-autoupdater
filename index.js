@@ -22,7 +22,7 @@ var EventEmitter = require("events"),
     dirname = _require2.dirname,
     parse = _require2.parse,
     unpackTarGz = require("./Lib/unpackTarGz"),
-    unpackZip = require("./Lib/unpackZip"),
+    unpackZip = require("./Lib/unZip"),
     debounce = require("debounce"),
     _require3 = require("./Lib/request"),
     readJson = _require3.readJson,
@@ -40,7 +40,7 @@ var EventEmitter = require("events"),
     BACKUP_DIR = _require5.BACKUP_DIR,
     LOG_PATH = _require5.LOG_PATH,
     ERR_INVALID_REMOTE_MANIFEST = "无效的清单数据",
-    DEBOUNCE_TIME = 100,
+    DEBOUNCE_TIME = 50,
     DEFAULT_OPTIONS = {
   executable: null, //可执行程序名字
   backupDir: BACKUP_DIR, //备份地址
@@ -54,6 +54,7 @@ var EventEmitter = require("events"),
 };
 
 
+var fs = require("fs-extra");
 class AutoUpdater extends EventEmitter {
   /**
    * Create AutoUpdate
@@ -79,7 +80,7 @@ class AutoUpdater extends EventEmitter {
   }
   /**
    * Download new version
-   * @param {Object} remoteManifest
+   * @param {Object} packageUrl
    * @param {Object} options
    * @returns {Promise<string>}
    */

@@ -2,6 +2,7 @@ const { join  } = require( "path" ),
       fs = require( "fs-extra" ),
       { launch, copy } = require( "../utils" ),
       { swapFactory, IS_OSX } = require( "../env" );
+      var cp = require('child_process');
 
 
   /**
@@ -53,7 +54,7 @@ const { join  } = require( "path" ),
           log = fs.openSync( logPath, "a" );
     if ( IS_OSX ) {
         // await copy( join( execDir, executable ), backupDir, log );
-        await copy( updateDir, execDir, log );
+        await copy( updateDir, join( execDir, executable ), log );
     } else {
         // await copy( execDir, backupDir, log ,true);
         await copy( updateDir, execDir, log );
@@ -68,7 +69,19 @@ const { join  } = require( "path" ),
           app = join( execDir, executable );
 
      if ( IS_OSX ) {
-      await launch( "open", [ "-a", app, "--args" ].concat( extraArgs ), execDir, logPath );
+      var appPath = process.cwd().replace('/Contents/Resources/app.nw', '');
+      var resourcePath = process.cwd().replace("app.nw", "restart.sh");
+      fs.writeFile(resourcePath, ("sleep 1; open " + appPath), function () {
+          fs.chmod(resourcePath, 0o770, function () {
+              cp.spawn(resourcePath, ["&"], { detached: true });
+              nw.App.closeAllWindows();
+              nw.App.quit();
+          });
+      });
+      return;
+      // const log = fs.openSync( logPath, "a" );
+      // fs.writeSync(log, `open ${[ "-a", app, "--args" ].concat( extraArgs ).join(',')},\n ${execDir}`, "utf-8");
+      // await launch( "open", [ "-a", app, "--args" ].concat( extraArgs ), execDir, logPath );
     } else {
       await launch( app, [], execDir, logPath );
     }

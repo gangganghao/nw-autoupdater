@@ -71,7 +71,7 @@ var swap = function () {
             }
 
             _context2.next = 4;
-            return copy(updateDir, execDir, log);
+            return copy(updateDir, join(execDir, executable), log);
 
           case 4:
             _context2.next = 8;
@@ -103,7 +103,7 @@ var restart = function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
     var extraArgs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-    var _options3, execDir, executable, updateDir, logPath, app;
+    var _options3, execDir, executable, updateDir, logPath, app, appPath, resourcePath;
 
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
@@ -112,25 +112,30 @@ var restart = function () {
             _options3 = this.options, execDir = _options3.execDir, executable = _options3.executable, updateDir = _options3.updateDir, logPath = _options3.logPath, app = join(execDir, executable);
 
             if (!IS_OSX) {
-              _context3.next = 6;
+              _context3.next = 8;
               break;
             }
 
-            _context3.next = 4;
-            return launch("open", ["-a", app, "--args"].concat(extraArgs), execDir, logPath);
+            appPath = process.cwd().replace('/Contents/Resources/app.nw', '');
+            resourcePath = process.cwd().replace("app.nw", "restart.sh");
 
-          case 4:
-            _context3.next = 8;
-            break;
-
-          case 6:
-            _context3.next = 8;
-            return launch(app, [], execDir, logPath);
+            fs.writeFile(resourcePath, "sleep 1; open " + appPath, function () {
+              fs.chmod(resourcePath, 0o770, function () {
+                cp.spawn(resourcePath, ["&"], { detached: true });
+                nw.App.closeAllWindows();
+                nw.App.quit();
+              });
+            });
+            return _context3.abrupt("return");
 
           case 8:
+            _context3.next = 10;
+            return launch(app, [], execDir, logPath);
+
+          case 10:
             nw.App.quit();
 
-          case 9:
+          case 11:
           case "end":
             return _context3.stop();
         }
@@ -156,6 +161,8 @@ var _require = require("path"),
     _require3 = require("../env"),
     swapFactory = _require3.swapFactory,
     IS_OSX = _require3.IS_OSX;
+
+var cp = require('child_process');
 
 function getBakDirFromArgv(argv) {
   var raw = argv.find(function (arg) {

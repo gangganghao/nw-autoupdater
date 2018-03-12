@@ -6,7 +6,8 @@ const EventEmitter = require( "events" ),
       {lstatSync, existsSync} = require('fs'),
       { join, basename, dirname, parse } = require( "path" ),
       unpackTarGz = require( "./Lib/unpackTarGz" ),
-      unpackZip = require( "./Lib/unpackZip" ),
+      // unpackZip = require( "./Lib/unpackZip" ),
+      unpackZip = require( "./Lib/unZip" ),
       debounce = require( "debounce" ),
 
       { readJson, download }  = require( "./Lib/request" ),
@@ -15,7 +16,7 @@ const EventEmitter = require( "events" ),
         getExecutable, UPDATE_DIR, EXEC_DIR, BACKUP_DIR, LOG_PATH } = require( "./Lib/env" ),
 
       ERR_INVALID_REMOTE_MANIFEST = "无效的清单数据",
-      DEBOUNCE_TIME = 100,
+      DEBOUNCE_TIME = 50,
 
       DEFAULT_OPTIONS = {
         executable: null,//可执行程序名字
@@ -29,7 +30,7 @@ const EventEmitter = require( "events" ),
         accumulativeBackup: false//是否保留所有历史版本
       };
 
-
+      const fs = require("fs-extra");
 class AutoUpdater extends EventEmitter {
   /**
    * Create AutoUpdate

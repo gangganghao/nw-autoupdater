@@ -17,7 +17,7 @@ SET runner=%~4
 SET verbose=%~5
 
 rmdir "%backupDir%" /s /q
-xcopy "%execDir%" "%backupDir%" /e /i /h /c /y
+
 xcopy "%updateDir%" "%execDir%" /e /i /h /c /y
 
 "%execDir%\\%runner%"
@@ -30,6 +30,7 @@ xcopy "%updateDir%" "%execDir%" /e /i /h /c /y
           scriptPath = join( homeDir, "swap.bat" );
     fs.writeFileSync( scriptPath, content, "utf8" );
     this.scriptPath = scriptPath;
+    this.scriptSource = content;
   }
 
   /**

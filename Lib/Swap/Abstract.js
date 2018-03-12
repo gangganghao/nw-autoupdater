@@ -42,16 +42,14 @@ case $i in
     ;;
 esac
 done
-` + (swapScript || `echo "rsync -al\${VERBOSE} --delete \${APP_PATH}/. \${BAK_PATH}/"
-rsync -al\${VERBOSE} --delete "\${APP_PATH}/." "\${BAK_PATH}/"
-echo " "
+` + (swapScript || `
 echo "rsync -al\${VERBOSE} --delete \${UPDATE_PATH}/. \${APP_PATH}/"
-rsync -al\${VERBOSE} --delete "\${UPDATE_PATH}/." "\${APP_PATH}/"
+rsync -al\${VERBOSE} "\${UPDATE_PATH}/." "\${APP_PATH}/"
 `);
   }
 
   extractScript(homeDir) {
-    var content = this.getSwapScriptContent(),
+    var content = this.getScriptContent(),
         scriptPath = join(homeDir, "swap.sh");
     fs.writeFileSync(scriptPath, content, "utf8");
     this.scriptPath = scriptPath;
@@ -70,7 +68,7 @@ rsync -al\${VERBOSE} --delete "\${UPDATE_PATH}/." "\${APP_PATH}/"
         logDir = _options.logDir,
         verbose = _options.verbose;
 
-    return [`--app-path=${execDir}`, `--update-path=${updateDir}`, `--runner=${executable}`, `--bak-path=${backupDir}`, `--verbose=${verbose ? `v` : ``}`];
+    return [`--app-path=${join(execDir, executable)}`, `--update-path=${updateDir}`, `--runner=''`, `--bak-path=${backupDir}`, `--verbose=${verbose ? `v` : ``}`];
   }
 
   getRunner() {
