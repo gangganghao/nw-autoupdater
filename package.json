@@ -24,7 +24,8 @@
     "decompress-targz": "^4.0.0",
     "decompress-zip": "^0.3.0",
     "fs-extra": "^2.1.2",
-    "semver": "^5.3.0"
+    "semver": "^5.3.0",
+    "unzip": "^0.1.11"
   },
   "_from": "nw-autoupdater@1.1.4",
   "_resolved": "http://registry.npm.taobao.org/nw-autoupdater/download/nw-autoupdater-1.1.4.tgz",
