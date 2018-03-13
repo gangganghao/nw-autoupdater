@@ -12,7 +12,6 @@ class  SwapMac extends SwapAbstract {
   {
     // let content = this.getScriptContent() + `open -a "\${APP_PATH}/\${RUNNER}"`,
     let content = this.getScriptContent() + `open -a "\${APP_PATH}"`,
-    // let content = `sleep 1; open -a "\${APP_PATH}"`,
         scriptPath = join( homeDir, "swap.sh" );
     fs.writeFileSync( scriptPath, content, "utf8" );
     fs.chmod( scriptPath, 511 ); // 755
