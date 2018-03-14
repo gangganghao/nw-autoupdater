@@ -1,4 +1,4 @@
-const unzip = require('node-unzip-2');
+const unzip = require('unzip');
 var fs = require('fs');
 /**
  * Extract archive into a given directory
